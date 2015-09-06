@@ -40,13 +40,13 @@ public class Bird extends View {
     public void updateBitmap() {
         switch (mBirdState) {
             case UP:
-                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.animalscrbetween1);
+                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bird_up);
                 break;
             case NEUTRAL:
-                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.animalscrbetween2);
+                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bird_neutral);
                 break;
             case DOWN:
-                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.animalscrbetween3);
+                mBirdBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bird_down);
                 break;
         }
     }

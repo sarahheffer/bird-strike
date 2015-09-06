@@ -9,10 +9,8 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Display;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 
 import com.sarahheffer.sarah.minigame.drawing.GameCanvas;
 
@@ -27,10 +25,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     android.graphics.PointF mPlayerPosition;
     android.graphics.PointF mPlayerSpeed;
 
-    // SETUP
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setupWindow();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Handler handler = new Handler();
@@ -44,21 +40,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         init();
     }
 
-    private void setupWindow() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(0xFFFFFFFF, WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    synchronized public void initGfx() {
+        mGameCanvas = (GameCanvas) findViewById(R.id.game_canvas);
+        frame.removeCallbacks(frameUpdate);
+        frame.postDelayed(frameUpdate, FRAME_RATE);
     }
 
     private void init() {
         Display display = getWindowManager().getDefaultDisplay();
         mScreenWidth = display.getWidth();
         mScreenHeight = display.getHeight();
+        ((GameCanvas) findViewById(R.id.game_canvas)).setScreenParams(mScreenWidth, mScreenHeight);
+
         mPlayerPosition = new android.graphics.PointF();
         mPlayerSpeed = new android.graphics.PointF();
 
         mPlayerPosition.x = mScreenWidth /2;
-        mPlayerPosition.y = mScreenHeight /2;
+        mPlayerPosition.y = mScreenHeight - 300;
         mPlayerSpeed.x = 0;
         mPlayerSpeed.y = 0;
 
@@ -67,25 +65,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
 
-    synchronized public void initGfx() {
-        mGameCanvas = (GameCanvas) findViewById(R.id.game_canvas);
-        Point p = new Point(mScreenWidth/2,mScreenHeight-50);
-        mGameCanvas.movePlayerTo(p);
-        frame.removeCallbacks(frameUpdate);
-        frame.postDelayed(frameUpdate, FRAME_RATE);
-    }
-
     private Runnable frameUpdate = new Runnable() {
         @Override
         synchronized public void run() {
             frame.removeCallbacks(frameUpdate);
             mPlayerPosition.x += mPlayerSpeed.x;
-            mPlayerPosition.y += mPlayerSpeed.y;
 
             if (mPlayerPosition.x > mScreenWidth) mPlayerPosition.x=0;
-            if (mPlayerPosition.y > mScreenHeight) mPlayerPosition.y=0;
             if (mPlayerPosition.x < 0) mPlayerPosition.x= mScreenWidth;
-            if (mPlayerPosition.y < 0) mPlayerPosition.y= mScreenHeight;
             Point p = new Point((int) mPlayerPosition.x, (int) mPlayerPosition.y);
             mGameCanvas.movePlayerTo(p);
 
@@ -102,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume() {
         super.onResume();
+        hideActionAndStatusBar();
         mSensorManager.registerListener(this, mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
@@ -112,11 +100,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onStop();
     }
 
+    private void hideActionAndStatusBar() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.hide();
+    }
 
     // ACCELERATION SENSOR EVENTS
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.d("SARAH", "Sensor change! " + event.values[0] + "     " + event.values[1]);
         mPlayerSpeed.x = event.values[1];
     }
 
