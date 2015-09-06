@@ -1,6 +1,7 @@
 package com.sarahheffer.sarah.minigame;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,11 +21,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Handler frame = new Handler();
     private static final int FRAME_RATE = 20;
     private SensorManager mSensorManager;
+    private GameCanvas mGameCanvas;
 
     int mScreenWidth, mScreenHeight;
     android.graphics.PointF mPlayerPosition;
     android.graphics.PointF mPlayerSpeed;
-
 
     // SETUP
     @Override
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     }
 
     synchronized public void initGfx() {
+        mGameCanvas = (GameCanvas) findViewById(R.id.game_canvas);
+        Point p = new Point(mScreenWidth/2,mScreenHeight-50);
+        mGameCanvas.movePlayerTo(p);
         frame.removeCallbacks(frameUpdate);
         frame.postDelayed(frameUpdate, FRAME_RATE);
     }
@@ -82,9 +86,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (mPlayerPosition.y > mScreenHeight) mPlayerPosition.y=0;
             if (mPlayerPosition.x < 0) mPlayerPosition.x= mScreenWidth;
             if (mPlayerPosition.y < 0) mPlayerPosition.y= mScreenHeight;
-            ((GameCanvas)findViewById(R.id.game_canvas)).movePlayerTo((int) mPlayerPosition.x, (int) mPlayerPosition.y);
+            Point p = new Point((int) mPlayerPosition.x, (int) mPlayerPosition.y);
+            mGameCanvas.movePlayerTo(p);
 
-            ((GameCanvas)findViewById(R.id.game_canvas)).invalidate();
+            mGameCanvas.invalidate();
             frame.postDelayed(frameUpdate, FRAME_RATE);
         }
     };
@@ -106,8 +111,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager.unregisterListener(this);
         super.onStop();
     }
-
-
 
 
     // ACCELERATION SENSOR EVENTS
