@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -50,6 +51,7 @@ public class GameCanvas extends View {
         cloud1.setScreenParams(mScreenWidth, mScreenHeight);
         cloud2.setScreenParams(mScreenWidth, mScreenHeight);
         cloud3.setScreenParams(mScreenWidth, mScreenHeight);
+        plane.setScreenParams(mScreenWidth, mScreenHeight);
     }
 
     @Override
@@ -57,7 +59,7 @@ public class GameCanvas extends View {
         drawCanvas(canvas);
         drawClouds(canvas);
         drawStars(canvas);
-//        drawPlane(canvas);
+        drawPlane(canvas);
         drawBird(canvas);
         drawStats(canvas);
         checkBirdStarCollision();
@@ -88,7 +90,10 @@ public class GameCanvas extends View {
     }
 
     private void drawPlane(Canvas canvas) {
+//        paint.setColor(Color.RED);
+//        canvas.drawRect(plane.getBounds(), paint);
         canvas.drawBitmap(plane.getBitmap(), plane.getMatrix(), paint);
+        plane.movePlane();
     }
 
     private void drawBird(Canvas canvas) {
@@ -101,8 +106,9 @@ public class GameCanvas extends View {
 
     private void drawStats(Canvas canvas) {
         paint.setColor(Color.BLACK);
-        paint.setTextSize(40);
-        canvas.drawText("Stars: " + bird.getStarsCollected(), 30, 50, paint);
+        paint.setTextSize(50);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        canvas.drawText("Stars: " + bird.getStarsCollected(), 40, 65, paint);
     }
 
     private void checkBirdStarCollision() {
