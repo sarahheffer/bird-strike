@@ -16,7 +16,6 @@ import com.sarahheffer.sarah.minigame.R;
 import com.sarahheffer.sarah.minigame.Star;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GameCanvas extends View {
 
@@ -128,15 +127,10 @@ public class GameCanvas extends View {
     public void initializeStars(Context context, int maxX) {
         mStarList = new ArrayList<Star>();
         for (int i = 0; i < mNumStars; i++) {
-            int x = randInt(10, maxX - 10);
-            int y = -50 - randInt(0, 100000);
+            int x = DrawingUtils.randInt(10, maxX - 10);
+            int y = -50 - DrawingUtils.randInt(0, 100000);
             Point p = new Point(x,y);
             mStarList.add(new Star(context, p));
         }
-    }
-    public static int randInt(int min, int max) {
-        Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
     }
 }

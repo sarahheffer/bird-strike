@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.view.View;
 
-import java.util.Random;
+import com.sarahheffer.sarah.minigame.drawing.DrawingUtils;
 
 public class Cloud extends View {
 
@@ -23,11 +23,11 @@ public class Cloud extends View {
     }
 
     private void resetCloud() {
-        int cloudX = randInt(40, mScreenWidth-200);
-        int cloudY = -150 - randInt(0, 120);
+        int cloudX = DrawingUtils.randInt(40, mScreenWidth - 200);
+        int cloudY = -150 - DrawingUtils.randInt(0, 120);
         mCloudLocation = new Point(cloudX, cloudY);
         setBitmap();
-        mCloudSpeed = randInt(2,5);
+        mCloudSpeed = DrawingUtils.randInt(2, 5);
     }
 
     public void moveCloud() {
@@ -46,7 +46,7 @@ public class Cloud extends View {
     }
 
     private void setBitmap() {
-        int cloudNum = randInt(1,4);
+        int cloudNum = DrawingUtils.randInt(1, 4);
         switch (cloudNum) {
             case 1:
                 mCloudBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cloud_1);
@@ -69,11 +69,5 @@ public class Cloud extends View {
     public void setScreenParams(int screenWidth, int screenHeight){
         mScreenWidth = screenWidth;
         mScreenHeight = screenHeight;
-    }
-
-    public static int randInt(int min, int max) {
-        Random rand = new Random();
-        int randomNum = rand.nextInt((max - min) + 1) + min;
-        return randomNum;
     }
 }

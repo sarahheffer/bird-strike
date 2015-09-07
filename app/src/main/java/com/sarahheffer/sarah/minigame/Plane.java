@@ -8,6 +8,8 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.view.View;
 
+import com.sarahheffer.sarah.minigame.drawing.DrawingUtils;
+
 public class Plane extends View {
 
     private Bitmap mPlaneBitmap = null;
@@ -20,7 +22,7 @@ public class Plane extends View {
         mPlaneLocation = new Point(200,200);
         mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_3);
         mPlaneBounds= new Rect(0,0,mPlaneBitmap.getWidth(),mPlaneBitmap.getHeight());
-        updateMatrix();
+        mMatrix = DrawingUtils.getMatrix(0, mPlaneBitmap, mPlaneLocation);
     }
 
     synchronized public void setLocation(Point p) {
@@ -42,15 +44,6 @@ public class Plane extends View {
         int right = left + mPlaneBitmap.getWidth();
         int bottom = top + mPlaneBitmap.getHeight();
         mPlaneBounds = new Rect(left, top, right, bottom);
-    }
-
-    public void updateMatrix() {
-        int rotation = 90;
-        Matrix m = new Matrix();
-        m.postRotate(rotation, mPlaneBitmap.getWidth() / 2, mPlaneBitmap.getHeight() / 2);
-        m.postTranslate(mPlaneLocation.x, mPlaneLocation.y);
-
-        mMatrix = m;
     }
 
     public Matrix getMatrix(){
