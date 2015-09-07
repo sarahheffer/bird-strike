@@ -9,6 +9,8 @@ import android.view.View;
 
 public class Bird extends View {
 
+    private int mStarsCollected = 0;
+
     private enum BirdState {UP, NEUTRAL, DOWN}
     private BirdState mBirdState;
 
@@ -19,21 +21,42 @@ public class Bird extends View {
 
     public Bird(Context context) {
         super(context);
-        mBirdLocation = new Point(-1,-1);
+        mBirdLocation = new Point(-100,-100);
         mBirdState = BirdState.NEUTRAL;
         updateBitmap();
-        mBirdBounds = new Rect(0,0, mBirdBitmap.getWidth(), mBirdBitmap.getHeight());
+        mBirdBounds = new Rect(-1,-1, 0, 0);
     }
 
-    synchronized public void setBirdLocation(Point p) {
+    synchronized public void updateStarsCollected() {
+        mStarsCollected++;
+    }
+
+    synchronized public int getStarsCollected() {
+        return mStarsCollected;
+    }
+
+    synchronized public void setLocation(Point p) {
         mBirdLocation = p;
+        updateBounds();
     }
 
-    synchronized public Point getBirdLocation() {
+    synchronized public Point getLocation() {
         return mBirdLocation;
     }
 
-    synchronized public Bitmap getBirdBitmap() {
+    private void updateBounds() {
+        int left = mBirdLocation.x + 18;
+        int top = mBirdLocation.y + 20;
+        int right = left + mBirdBitmap.getWidth() - 36;
+        int bottom = top + mBirdBitmap.getHeight()-20;
+        mBirdBounds = new Rect(left, top, right, bottom);
+    }
+
+    synchronized public Rect getBounds() {
+        return mBirdBounds;
+    }
+
+    synchronized public Bitmap getBitmap() {
         return mBirdBitmap;
     }
 

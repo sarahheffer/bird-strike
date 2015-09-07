@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.view.View;
 
 import java.util.Random;
@@ -15,14 +14,12 @@ public class Cloud extends View {
     private int mScreenHeight;
 
     private Bitmap mCloudBitmap = null;
-    private Rect mCloudBounds = new Rect(0,0,0,0);
     private Point mCloudLocation;
     private int mCloudSpeed;
 
     public Cloud(Context context) {
         super(context);
         resetCloud();
-        mCloudBounds = new Rect(0,0, mCloudBitmap.getWidth(), mCloudBitmap.getHeight());
     }
 
     private void resetCloud() {

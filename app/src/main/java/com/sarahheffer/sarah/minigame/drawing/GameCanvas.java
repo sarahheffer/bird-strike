@@ -2,37 +2,52 @@ package com.sarahheffer.sarah.minigame.drawing;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.sarahheffer.sarah.minigame.Bird;
 import com.sarahheffer.sarah.minigame.Cloud;
+import com.sarahheffer.sarah.minigame.Plane;
 import com.sarahheffer.sarah.minigame.R;
+import com.sarahheffer.sarah.minigame.Star;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 public class GameCanvas extends View {
 
     int mScreenWidth, mScreenHeight;
+    private Context mContext;
 
     private Paint paint;
     private Bird bird;
     private Cloud cloud1;
     private Cloud cloud2;
     private Cloud cloud3;
+    private Plane plane;
+
+    private ArrayList<Star> mStarList = null;
+    private int mNumStars = 250;
 
     public GameCanvas(Context context, AttributeSet aSet) {
         super(context, aSet);
+        mContext = context;
         paint = new Paint();
         bird = new Bird(context);
         cloud1 = new Cloud(context);
         cloud2 = new Cloud(context);
         cloud3 = new Cloud(context);
+        plane = new Plane(context);
     }
 
     public void setScreenParams(int screenWidth, int screenHeight){
         mScreenWidth = screenWidth;
         mScreenHeight = screenHeight;
+        initializeStars(mContext, mScreenWidth);
         cloud1.setScreenParams(mScreenWidth, mScreenHeight);
         cloud2.setScreenParams(mScreenWidth, mScreenHeight);
         cloud3.setScreenParams(mScreenWidth, mScreenHeight);
@@ -42,7 +57,11 @@ public class GameCanvas extends View {
     synchronized public void onDraw(Canvas canvas) {
         drawCanvas(canvas);
         drawClouds(canvas);
+        drawStars(canvas);
+//        drawPlane(canvas);
         drawBird(canvas);
+        drawStats(canvas);
+        checkBirdStarCollision();
     }
 
     public void drawCanvas(Canvas canvas) {
@@ -61,15 +80,63 @@ public class GameCanvas extends View {
         cloud3.moveCloud();
     }
 
+    private void drawStars(Canvas canvas) {
+        for (int i=0; i< mNumStars; i++) {
+            Star star = mStarList.get(i);
+            canvas.drawBitmap(star.getBitmap(), star.getLocation().x, star.getLocation().y, null);
+            star.moveStar();
+        }
+    }
+
+    private void drawPlane(Canvas canvas) {
+        canvas.drawBitmap(plane.getBitmap(), plane.getMatrix(), paint);
+    }
+
     private void drawBird(Canvas canvas) {
-        if (bird.getBirdLocation().x >= 0) {
-            canvas.drawBitmap(bird.getBirdBitmap(), bird.getBirdLocation().x, bird.getBirdLocation().y, null);
+        if (bird.getLocation().x >= -bird.getBitmap().getWidth()) {
+            canvas.drawBitmap(bird.getBitmap(), bird.getLocation().x, bird.getLocation().y, null);
             bird.updateBirdState();
             bird.updateBitmap();
         }
     }
 
+    private void drawStats(Canvas canvas) {
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(40);
+        canvas.drawText("Stars: " + bird.getStarsCollected(), 30, 50, paint);
+    }
+
+    private void checkBirdStarCollision() {
+        for (int i=0; i<mNumStars; i++){
+            Star star = mStarList.get(i);
+            if (isCollision(star.getBounds(), bird.getBounds())) {
+                bird.updateStarsCollected();
+                mStarList.remove(i);
+                mNumStars--;
+            }
+        }
+    }
+
     public void movePlayerTo(Point p) {
-        bird.setBirdLocation(p);
+        bird.setLocation(p);
+    }
+
+    private boolean isCollision(Rect r1, Rect r2) {
+        return r1.intersect(r2);
+    }
+
+    public void initializeStars(Context context, int maxX) {
+        mStarList = new ArrayList<Star>();
+        for (int i = 0; i < mNumStars; i++) {
+            int x = randInt(10, maxX - 10);
+            int y = -50 - randInt(0, 100000);
+            Point p = new Point(x,y);
+            mStarList.add(new Star(context, p));
+        }
+    }
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+        return randomNum;
     }
 }
