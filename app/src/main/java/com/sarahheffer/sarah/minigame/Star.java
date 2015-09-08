@@ -24,7 +24,7 @@ public class Star extends View {
         return mStarLocation;
     }
 
-    synchronized public Bitmap getBitmap() {
+    public Bitmap getBitmap() {
         return mStarBitmap;
     }
 

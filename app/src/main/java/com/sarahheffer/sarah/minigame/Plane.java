@@ -15,8 +15,6 @@ public class Plane extends View {
     private int mScreenWidth;
     private int mScreenHeight;
 
-    private enum PlaneSize {SMALL, MEDIUM, LARGE}
-    private PlaneSize mPlaneSize;
     private enum DirectionFacing {SOUTH_EAST, DOWN, SOUTH_WEST}
     private DirectionFacing mDirectionFacing;
 
@@ -27,21 +25,29 @@ public class Plane extends View {
 
     public Plane(Context context) {
         super(context);
-        mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_3);
+        mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_2);
         mPlaneLocation = new Point(-1000,-1000);
+        mDirectionFacing = DirectionFacing.DOWN;
     }
 
     private void resetPlane() {
-        setPlaneBitmapSize();
         setPlaneDirectionAndLocation();
     }
 
-    synchronized public Bitmap getBitmap() {
+    public Bitmap getBitmap() {
         return mPlaneBitmap;
     }
 
     public Matrix getMatrix(){
         return mMatrix;
+    }
+
+    public Point getLocation() {
+        return mPlaneLocation;
+    }
+
+    public Rect getBounds() {
+        return mPlaneBounds;
     }
 
     private void updateBounds() {
@@ -60,8 +66,8 @@ public class Plane extends View {
                 mMatrix.postTranslate(4,4);
                 break;
             case DOWN:
-                mPlaneLocation.y+=4;
-                mMatrix.postTranslate(0,4);
+                mPlaneLocation.y+=5;
+                mMatrix.postTranslate(0,5);
                 break;
             case SOUTH_WEST:
                 mPlaneLocation.y+=4;
@@ -76,22 +82,6 @@ public class Plane extends View {
         }
     }
 
-    private void setPlaneBitmapSize() {
-        int size = DrawingUtils.randInt(0,2);
-        mPlaneSize = PlaneSize.values()[size];
-        switch (mPlaneSize) {
-            case LARGE:
-                mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_1);
-                break;
-            case MEDIUM:
-                mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_2);
-                break;
-            case SMALL:
-                mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_3);
-                break;
-        }
-    }
-
     private void setPlaneDirectionAndLocation() {
         int x, y;
         int direction = DrawingUtils.randInt(0,2);
@@ -99,7 +89,7 @@ public class Plane extends View {
         switch (mDirectionFacing) {
             case SOUTH_EAST:
                 x = -600;
-                y = DrawingUtils.randInt(0,100);
+                y = -500 + DrawingUtils.randInt(0,500);
                 mPlaneLocation = new Point(x,y);
                 mMatrix = DrawingUtils.getMatrix(315, mPlaneBitmap, mPlaneLocation);
                 break;
@@ -111,7 +101,7 @@ public class Plane extends View {
                 break;
             case SOUTH_WEST:
                 x = mScreenWidth+100;
-                y = DrawingUtils.randInt(0,100);
+                y = -500 + DrawingUtils.randInt(0,500);
                 mPlaneLocation = new Point(x,y);
                 mMatrix = DrawingUtils.getMatrix(45, mPlaneBitmap, mPlaneLocation);
                 break;

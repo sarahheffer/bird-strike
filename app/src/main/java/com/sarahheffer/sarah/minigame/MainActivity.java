@@ -71,8 +71,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             frame.removeCallbacks(frameUpdate);
             mPlayerPosition.x += mPlayerSpeed.x;
 
-            if (mPlayerPosition.x > mScreenWidth) mPlayerPosition.x=0;
-            if (mPlayerPosition.x < 0) mPlayerPosition.x= mScreenWidth;
+            if (mPlayerPosition.x > mScreenWidth) mPlayerPosition.x=-50;
+            if (mPlayerPosition.x < -50) mPlayerPosition.x= mScreenWidth;
             Point p = new Point((int) mPlayerPosition.x, (int) mPlayerPosition.y);
             mGameCanvas.movePlayerTo(p);
 

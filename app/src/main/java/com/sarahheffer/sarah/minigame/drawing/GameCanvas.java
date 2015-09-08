@@ -8,6 +8,7 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.sarahheffer.sarah.minigame.Bird;
@@ -63,6 +64,13 @@ public class GameCanvas extends View {
         drawBird(canvas);
         drawStats(canvas);
         checkBirdStarCollision();
+        checkBirdPlaneCollision();
+    }
+
+    private void checkBirdPlaneCollision() {
+        if (CollisionUtils.isPlaneCollisionDetected(bird, plane)) {
+            Log.d("SARAH_DEBUG", "BIRD/PLANE COLLISION");
+        }
     }
 
     public void drawCanvas(Canvas canvas) {
@@ -90,18 +98,14 @@ public class GameCanvas extends View {
     }
 
     private void drawPlane(Canvas canvas) {
-//        paint.setColor(Color.RED);
-//        canvas.drawRect(plane.getBounds(), paint);
         canvas.drawBitmap(plane.getBitmap(), plane.getMatrix(), paint);
         plane.movePlane();
     }
 
     private void drawBird(Canvas canvas) {
-        if (bird.getLocation().x >= -bird.getBitmap().getWidth()) {
             canvas.drawBitmap(bird.getBitmap(), bird.getLocation().x, bird.getLocation().y, null);
             bird.updateBirdState();
             bird.updateBitmap();
-        }
     }
 
     private void drawStats(Canvas canvas) {
