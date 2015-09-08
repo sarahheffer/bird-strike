@@ -1,4 +1,4 @@
-package com.sarahheffer.sarah.minigame;
+package com.sarahheffer.sarah.minigame.activities;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 
+import com.sarahheffer.sarah.minigame.R;
 import com.sarahheffer.sarah.minigame.drawing.GameCanvas;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {

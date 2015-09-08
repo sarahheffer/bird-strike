@@ -11,11 +11,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.sarahheffer.sarah.minigame.Bird;
-import com.sarahheffer.sarah.minigame.Cloud;
-import com.sarahheffer.sarah.minigame.Plane;
+import com.sarahheffer.sarah.minigame.models.Bird;
+import com.sarahheffer.sarah.minigame.models.Cloud;
+import com.sarahheffer.sarah.minigame.models.Plane;
 import com.sarahheffer.sarah.minigame.R;
-import com.sarahheffer.sarah.minigame.Star;
+import com.sarahheffer.sarah.minigame.models.Star;
 
 import java.util.ArrayList;
 

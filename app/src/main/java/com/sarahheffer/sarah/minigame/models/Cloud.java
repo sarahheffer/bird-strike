@@ -1,4 +1,4 @@
-package com.sarahheffer.sarah.minigame;
+package com.sarahheffer.sarah.minigame.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.view.View;
 
+import com.sarahheffer.sarah.minigame.R;
 import com.sarahheffer.sarah.minigame.drawing.DrawingUtils;
 
 public class Cloud extends View {

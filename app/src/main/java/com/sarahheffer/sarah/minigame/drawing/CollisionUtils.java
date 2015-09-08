@@ -3,8 +3,8 @@ package com.sarahheffer.sarah.minigame.drawing;
 import android.graphics.Color;
 import android.graphics.Rect;
 
-import com.sarahheffer.sarah.minigame.Bird;
-import com.sarahheffer.sarah.minigame.Plane;
+import com.sarahheffer.sarah.minigame.models.Bird;
+import com.sarahheffer.sarah.minigame.models.Plane;
 
 public class CollisionUtils {
 
