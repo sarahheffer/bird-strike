@@ -29,11 +29,11 @@
         <Button
             android:id="@+id/play_again_button"
             android:layout_width="wrap_content"
-            android:layout_marginTop="30dp"
             android:layout_height="wrap_content"
-            android:text="@string/play_again"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_background" />
+            android:layout_marginTop="30dp"
+            android:text="@string/play_again"
+            android:background="@drawable/button_play_again_background" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     // ACCELERATION SENSOR EVENTS
     @Override
     public void onSensorChanged(SensorEvent event) {
-        mPlayerSpeed.x = event.values[1];
+        mPlayerSpeed.x = (float) (event.values[1] * 1.5);
     }
 
     @Override
