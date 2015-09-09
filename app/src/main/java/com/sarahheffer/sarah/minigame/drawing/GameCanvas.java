@@ -5,16 +5,14 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
+import com.sarahheffer.sarah.minigame.R;
 import com.sarahheffer.sarah.minigame.models.Bird;
 import com.sarahheffer.sarah.minigame.models.Cloud;
 import com.sarahheffer.sarah.minigame.models.Plane;
-import com.sarahheffer.sarah.minigame.R;
 import com.sarahheffer.sarah.minigame.models.Star;
 
 import java.util.ArrayList;
@@ -64,13 +62,6 @@ public class GameCanvas extends View {
         drawBird(canvas);
         drawStats(canvas);
         checkBirdStarCollision();
-        checkBirdPlaneCollision();
-    }
-
-    private void checkBirdPlaneCollision() {
-        if (CollisionUtils.isPlaneCollisionDetected(bird, plane)) {
-            Log.d("SARAH_DEBUG", "BIRD/PLANE COLLISION");
-        }
     }
 
     public void drawCanvas(Canvas canvas) {
@@ -112,13 +103,14 @@ public class GameCanvas extends View {
         paint.setColor(Color.BLACK);
         paint.setTextSize(50);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        canvas.drawText("Stars: " + bird.getStarsCollected(), 40, 65, paint);
+        String starStatString = getResources().getString(R.string.stars, bird.getStarsCollected());
+        canvas.drawText(starStatString, 40, 65, paint);
     }
 
     private void checkBirdStarCollision() {
         for (int i=0; i<mNumStars; i++){
             Star star = mStarList.get(i);
-            if (isCollision(star.getBounds(), bird.getBounds())) {
+            if (star.getBounds().intersect(bird.getBounds())) {
                 bird.updateStarsCollected();
                 mStarList.remove(i);
                 mNumStars--;
@@ -130,8 +122,12 @@ public class GameCanvas extends View {
         bird.setLocation(p);
     }
 
-    private boolean isCollision(Rect r1, Rect r2) {
-        return r1.intersect(r2);
+    public boolean checkBirdPlaneCollision() {
+        return CollisionUtils.isPlaneCollisionDetected(bird, plane);
+    }
+
+    public int getNumStarsCollected() {
+        return bird.getStarsCollected();
     }
 
     public void initializeStars(Context context, int maxX) {

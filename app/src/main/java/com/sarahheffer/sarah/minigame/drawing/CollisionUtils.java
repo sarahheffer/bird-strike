@@ -1,5 +1,6 @@
 package com.sarahheffer.sarah.minigame.drawing;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 

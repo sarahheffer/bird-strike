@@ -1,6 +1,7 @@
 package com.sarahheffer.sarah.minigame.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        init();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -37,8 +40,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 initGfx();
             }
         }, 1000);
-
-        init();
     }
 
     synchronized public void initGfx() {
@@ -62,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mPlayerSpeed.y = 0;
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(this, mSensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER).get(0),
-                SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private Runnable frameUpdate = new Runnable() {
@@ -78,9 +77,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             mGameCanvas.movePlayerTo(p);
 
             mGameCanvas.invalidate();
-            frame.postDelayed(frameUpdate, FRAME_RATE);
+            checkGameOver();
         }
     };
+
+    private void checkGameOver() {
+        if (mGameCanvas.checkBirdPlaneCollision()) {
+            Intent intent = new Intent(this, GameOverActivity.class);
+            intent.putExtra("STARS", mGameCanvas.getNumStarsCollected());
+            startActivity(intent);
+        } else {
+            frame.postDelayed(frameUpdate, FRAME_RATE);
+        }
+    }
 
     @Override
     public void onPause() {
