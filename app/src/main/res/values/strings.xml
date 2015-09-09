@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MiniGame</string>
+    <string name="app_name">Bird Strike</string>
 
     <string name="action_settings">Settings</string>
     <string name="stars">Stars: %1$d</string>
