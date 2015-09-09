@@ -1,6 +1,5 @@
 package com.sarahheffer.sarah.minigame.drawing;
 
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 
@@ -41,7 +40,7 @@ public class CollisionUtils {
     }
 
     private static int getBitmapPixel(Plane plane, int i, int j) {
-        return plane.getBitmap().getPixel(i-plane.getLocation().x, j-plane.getLocation().y);
+        return plane.getRotatedBitmap().getPixel(i-plane.getLocation().x, j-plane.getLocation().y);
     }
 
     private static boolean isFilled(int pixel) {

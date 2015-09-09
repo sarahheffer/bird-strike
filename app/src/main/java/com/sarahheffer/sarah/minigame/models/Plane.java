@@ -20,27 +20,20 @@ public class Plane extends View {
     private DirectionFacing mDirectionFacing;
 
     private Bitmap mPlaneBitmap = null;
+    private Bitmap mPlaneBitmapRotated = null;
     private Rect mPlaneBounds = new Rect(0,0,0,0);
     private Point mPlaneLocation;
     private Matrix mMatrix;
 
     public Plane(Context context) {
         super(context);
-        mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane_2);
+        mPlaneBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.plane);
         mPlaneLocation = new Point(-1000,-1000);
         mDirectionFacing = DirectionFacing.DOWN;
     }
 
-    private void resetPlane() {
-        setPlaneDirectionAndLocation();
-    }
-
-    public Bitmap getBitmap() {
-        return mPlaneBitmap;
-    }
-
-    public Matrix getMatrix(){
-        return mMatrix;
+    public Bitmap getRotatedBitmap() {
+        return mPlaneBitmapRotated;
     }
 
     public Point getLocation() {
@@ -54,8 +47,8 @@ public class Plane extends View {
     private void updateBounds() {
         int left = mPlaneLocation.x;
         int top = mPlaneLocation.y;
-        int right = left + mPlaneBitmap.getWidth();
-        int bottom = top + mPlaneBitmap.getHeight();
+        int right = left + mPlaneBitmapRotated.getWidth();
+        int bottom = top + mPlaneBitmapRotated.getHeight();
         mPlaneBounds = new Rect(left, top, right, bottom);
     }
 
@@ -83,7 +76,7 @@ public class Plane extends View {
         }
     }
 
-    private void setPlaneDirectionAndLocation() {
+    private void resetPlane() {
         int x, y;
         int direction = DrawingUtils.randInt(0,2);
         mDirectionFacing = DirectionFacing.values()[direction];
@@ -107,6 +100,7 @@ public class Plane extends View {
                 mMatrix = DrawingUtils.getMatrix(45, mPlaneBitmap, mPlaneLocation);
                 break;
         }
+        mPlaneBitmapRotated = Bitmap.createBitmap(mPlaneBitmap, 0, 0, mPlaneBitmap.getWidth(), mPlaneBitmap.getHeight(), mMatrix, true);
         updateBounds();
     }
 

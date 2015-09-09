@@ -89,7 +89,7 @@ public class GameCanvas extends View {
     }
 
     private void drawPlane(Canvas canvas) {
-        canvas.drawBitmap(plane.getBitmap(), plane.getMatrix(), paint);
+        canvas.drawBitmap(plane.getRotatedBitmap(), plane.getLocation().x, plane.getLocation().y, null);
         plane.movePlane();
     }
 
